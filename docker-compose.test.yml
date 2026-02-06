@@ -1,0 +1,75 @@
+# Docker Compose for running integration and smoke tests
+# Usage: docker compose -f docker-compose.test.yml up --build --abort-on-container-exit
+
+services:
+  db-test:
+    image: postgres:16-alpine
+    environment:
+      POSTGRES_USER: ownu
+      POSTGRES_PASSWORD: ownu_test_password
+      POSTGRES_DB: ownu_test
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U ownu -d ownu_test"]
+      interval: 5s
+      timeout: 5s
+      retries: 5
+    tmpfs:
+      - /var/lib/postgresql/data  # Use tmpfs for faster tests
+
+  backend-test:
+    build:
+      context: ./backend
+      dockerfile: Dockerfile
+    environment:
+      DATABASE_URL: postgres://ownu:ownu_test_password@db-test:5432/ownu_test?sslmode=disable
+      JWT_SECRET: test-jwt-secret-for-ci-testing-only
+      WEBAUTHN_RP_ID: localhost
+      WEBAUTHN_RP_ORIGIN: http://localhost
+      WEBAUTHN_RP_NAME: OwnU Test
+    ports:
+      - "8080:8080"
+    depends_on:
+      db-test:
+        condition: service_healthy
+
+  frontend-test:
+    build:
+      context: ./frontend
+      dockerfile: Dockerfile
+    ports:
+      - "80:80"
+    depends_on:
+      - backend-test
+
+  # Smoke test runner
+  smoke-tests:
+    image: curlimages/curl:latest
+    volumes:
+      - ./scripts:/scripts:ro
+    environment:
+      API_BASE: http://backend-test:8080
+      FRONTEND_BASE: http://frontend-test
+      VERBOSE: "true"
+    depends_on:
+      - backend-test
+      - frontend-test
+    entrypoint: ["/bin/sh", "-c"]
+    command:
+      - |
+        echo "Waiting for services to be ready..."
+        sleep 10
+
+        echo "Running smoke tests..."
+        /scripts/smoke-test.sh
+
+  # Backend unit tests
+  backend-unit-tests:
+    build:
+      context: ./backend
+      dockerfile: Dockerfile.test
+    environment:
+      DATABASE_URL: postgres://ownu:ownu_test_password@db-test:5432/ownu_test?sslmode=disable
+    depends_on:
+      db-test:
+        condition: service_healthy
+    command: ["go", "test", "-v", "-race", "-coverprofile=coverage.out", "./..."]

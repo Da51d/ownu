@@ -1,0 +1,20 @@
+# OWASP ZAP Scan Rules Configuration
+# Format: rule_id	action	rule_name
+# Actions: IGNORE, WARN, FAIL
+
+# Informational findings (IGNORE)
+10021	IGNORE	X-Content-Type-Options Header Missing
+10038	IGNORE	Content Security Policy (CSP) Header Not Set
+
+# Warnings (don't fail build, but note)
+10035	WARN	Strict-Transport-Security Header Not Set
+10096	WARN	Timestamp Disclosure - Unix
+10027	WARN	Information Disclosure - Suspicious Comments
+
+# Expected for API-only backend
+10015	IGNORE	Re-examine Cache-control Directives
+90033	IGNORE	Loosely Scoped Cookie
+
+# Common false positives for REST APIs
+10020	IGNORE	X-Frame-Options Header Not Set
+10036	IGNORE	Server Leaks Version Information via "Server" HTTP Response Header Field

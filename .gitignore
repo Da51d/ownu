@@ -1,0 +1,59 @@
+# Dependencies
+node_modules/
+vendor/
+
+# Build outputs
+dist/
+build/
+*.exe
+*.dll
+*.so
+*.dylib
+
+# Backend
+backend/ownu
+backend/coverage.out
+backend/coverage.html
+
+# Frontend
+frontend/coverage/
+frontend/.vite/
+
+# E2E
+e2e/test-results/
+e2e/playwright-report/
+e2e/playwright/.cache/
+
+# Environment
+.env
+.env.local
+.env.*.local
+
+# SSL Certificates (generated locally)
+certs/
+certbot/
+
+# IDE
+.idea/
+.vscode/
+*.swp
+*.swo
+*~
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Logs
+*.log
+npm-debug.log*
+
+# Testing
+*.test.js.map
+
+# Docker
+postgres_data/
+
+# Misc
+*.bak
+*.tmp
