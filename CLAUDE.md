@@ -4,6 +4,24 @@
 
 Privacy-first, self-hosted personal finance tracker. Helps users break the paycheck-to-paycheck cycle.
 
+## Current Status
+
+**Phase 1 Complete** - Foundation is built:
+- WebAuthn authentication (backend + frontend)
+- Row-level encryption (AES-256-GCM, Argon2id)
+- Account CRUD with encryption
+- Plaid integration for bank sync
+- Security policies and CI/CD scanning
+- Supply chain security (Chalk, Cosign, SBOM)
+- GDPR/CCPA compliance endpoints
+
+**Next Steps (Phase 2)**:
+- Implement transaction CRUD handlers (currently return "not implemented")
+- Implement category management
+- CSV/OFX import functionality
+- Spending reports
+- Complete frontend dashboard with transaction views
+
 ## Tech Stack
 
 - **Backend**: Go 1.23+ with Echo framework
