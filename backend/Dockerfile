@@ -21,7 +21,7 @@ RUN go mod tidy && CGO_ENABLED=0 GOOS=linux go build -a -installsuffix cgo -o ow
 RUN chalk insert ownu
 
 # Runtime stage
-FROM alpine:3.19
+FROM alpine:3.23
 
 WORKDIR /app
 
