@@ -11,7 +11,7 @@ require (
 	github.com/jackc/pgx/v5 v5.5.5
 	github.com/labstack/echo/v4 v4.11.4
 	github.com/plaid/plaid-go/v27 v27.0.0
-	github.com/stretchr/testify v1.9.0
+	github.com/stretchr/testify v1.11.1
 	golang.org/x/crypto v0.21.0
 )
 
