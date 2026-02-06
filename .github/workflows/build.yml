@@ -129,7 +129,7 @@ jobs:
           chalk extract ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}:sha-${{ github.sha }} > chalk-report.json
 
       - name: Upload Chalk Report
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@v6
         with:
           name: chalk-report
           path: backend/chalk-report.json
@@ -147,7 +147,7 @@ jobs:
 
       - name: Upload SBOM
         if: github.event_name != 'pull_request'
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@v6
         with:
           name: sbom
           path: |
@@ -209,7 +209,7 @@ jobs:
         run: npm run build
 
       - name: Upload build artifacts
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@v6
         with:
           name: frontend-dist
           path: frontend/dist
